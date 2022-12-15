@@ -145,3 +145,4 @@ dist
 /build/
 .idea
 package-lock.json
+/assets/resized-images/
