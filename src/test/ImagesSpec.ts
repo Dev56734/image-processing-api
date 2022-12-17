@@ -3,7 +3,21 @@ import app from "../main";
 import useImageProcessing from "../main/services/useImageProcessing";
 import { FileNotFoundError } from "../main/helpers/ErrorTypes";
 import sharp from "sharp";
+import { isPositiveInteger } from "../main/routes/images/ImagesRoute";
 
+describe("testing utils functions", () => {
+  it('validate "100" is positive number', () => {
+    expect(isPositiveInteger("100")).toBeTrue();
+  });
+
+  it('validate "-100" is not a positive number', () => {
+    expect(isPositiveInteger("-100")).toBeFalse();
+  });
+
+  it('validate "abc" is not a positive number', () => {
+    expect(isPositiveInteger("abc")).toBeFalse();
+  });
+});
 describe("testing images api", () => {
   const request = supertest(app);
   const validInputs = [{ filename: "fjord", height: 200, width: 200 }];

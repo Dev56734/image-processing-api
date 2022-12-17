@@ -5,8 +5,21 @@ import { FileNotFoundError } from "../../helpers/ErrorTypes";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  if (!validQueryParams(req.query)) {
-    res.status(400).send(`wrong params ${JSON.stringify(req.query)}`);
+  if (
+    !("filename" in req.query) ||
+    !("width" in req.query) ||
+    !("height" in req.query)
+  ) {
+    res
+      .status(400)
+      .send(`missing query parameters ${JSON.stringify(req.query)}`);
+    return;
+  }
+  if (
+    !isPositiveInteger(req.query.height as string) ||
+    !isPositiveInteger(req.query.width as string)
+  ) {
+    res.status(400).send("please enter valid width and height");
     return;
   }
   const fileName = req.query.filename as string;
@@ -29,8 +42,9 @@ route.get("/", async (req, res) => {
   }
 });
 
-function validQueryParams(object: any) {
-  return !!(object.filename && object.height && object.width);
+export function isPositiveInteger(value: string): boolean {
+  const num = Number(value);
+  return Number.isInteger(num) && num > 0;
 }
 
 export default route;
