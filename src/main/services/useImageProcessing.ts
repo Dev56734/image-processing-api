@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { FileNotFoundError } from "../helpers/ErrorTypes";
 
 export default (imageName: string) => {
-  async function resize(width: number, height: number) {
+  async function resize(width: number, height: number): Promise<string> {
     const inputFilePath = path.join("./assets/images", `${imageName}.jpg`);
     if (!fs.existsSync(inputFilePath)) {
       throw new FileNotFoundError(`file "${imageName}" not found`);
